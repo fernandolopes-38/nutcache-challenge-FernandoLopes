@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba($color: #fff, $alpha: 0.75);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  padding: 2rem;
+
+  background-color: lightblue;
+
+  border-radius: 0.25rem;
+
+  &.open {
+    animation: modal-open 2s forwards;
+  }
+
+  &.close {
+    animation: modal-close 2s forwards;
+  }
+
+  header {
+    display: flex;
+    gap: 1rem;
+
+    margin-bottom: 2rem;
+  }
+
+  @keyframes modal-open {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translate(0);
+    }
+  }
+  @keyframes modal-close {
+    from {
+      transform: translate(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+}
