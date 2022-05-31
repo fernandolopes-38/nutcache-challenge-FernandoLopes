@@ -10,18 +10,18 @@
   // white-space: nowrap;
   font-size: 0.85rem;
 
-  padding: 5px 8px;
+  padding: 5px 12px;
 
   border-radius: 5px;
 
   transition: color 0.3s, background-color 0.3s;
 
   color: colors.$white;
-  background-color: colors.$blue-100;
-  border: 2px solid colors.$blue-100;
+  background-color: colors.$green;
+  border: 2px solid colors.$green;
 
   &:hover {
-    color: colors.$blue-100;
+    color: colors.$green;
     background-color: colors.$white;
   }
 

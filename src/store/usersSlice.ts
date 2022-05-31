@@ -5,72 +5,107 @@ import { AppThunk, RootState } from "./store";
 
 export interface UsersState {
   users: User[];
-  status: "idle" | "loading" | "success" | "failed";
+  fetchStatus: "idle" | "loading" | "success" | "failed";
+  addStatus: "idle" | "loading" | "success" | "failed";
 }
 
 const initialState: UsersState = {
   users: [],
-  status: "idle",
+  fetchStatus: "idle",
+  addStatus: "idle",
 };
 
 export const registerUser = createAsyncThunk(
   "users/postUser",
   async (user: Omit<User, "_id">) => {
-    const response = await api.post("/employees", user);
-    return response.data;
+    const { data } = await api.post("/employees", user);
+    return data;
   }
 );
+
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const { data } = await api.get("/employees");
   return data;
 });
 
+export const updateUser = createAsyncThunk<
+  User,
+  { userId: string; user: Omit<User, "_id"> }
+>("users/putUser", async ({ userId, user }) => {
+  await api.put(`/employees/${userId}`, user);
+  return { ...user, _id: userId };
+});
+
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (userId: string) => {
+    const response = await api.delete(`/employees/${userId}`);
+    return response.data;
+  }
+);
+
 export const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {
-    increment: (state: UsersState) => {},
-    decrement: (state: UsersState) => {},
-    incrementByAmount: (state: UsersState, action: PayloadAction<number>) => {},
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        state.status = "loading";
+        state.addStatus = "loading";
       })
       .addCase(
         registerUser.fulfilled,
         (state, { payload }: PayloadAction<User>) => {
-          state.status = "idle";
+          state.addStatus = "idle";
           state.users = [...state.users, payload];
         }
       )
-      .addCase(registerUser.rejected, (state, action) => {
-        console.log({ action });
-        state.status = "failed";
+      .addCase(registerUser.rejected, (state) => {
+        state.addStatus = "failed";
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.addStatus = "loading";
+      })
+      .addCase(
+        updateUser.fulfilled,
+        (state, { payload }: PayloadAction<User>) => {
+          console.log({ payload });
+          state.addStatus = "idle";
+          const updatedUser = state.users;
+          const userToUpdateIndex = updatedUser.findIndex(
+            (user) => user._id === payload._id
+          );
+          updatedUser.splice(userToUpdateIndex, 1, payload);
+          state.users = updatedUser;
+        }
+      )
+      .addCase(updateUser.rejected, (state) => {
+        state.addStatus = "failed";
       })
       .addCase(fetchUsers.pending, (state) => {
-        state.status = "loading";
+        state.fetchStatus = "loading";
       })
       .addCase(
         fetchUsers.fulfilled,
         (state, { payload }: PayloadAction<User[]>) => {
-          state.status = "idle";
+          state.fetchStatus = "idle";
           state.users = payload;
         }
       )
       .addCase(fetchUsers.rejected, (state, action) => {
         console.log({ action });
-        state.status = "failed";
+        state.fetchStatus = "failed";
       });
   },
 });
 
-export const { increment, decrement, incrementByAmount } = usersSlice.actions;
+// export const { increment, decrement, incrementByAmount } = usersSlice.actions;
 
 export const selectUsers = (state: RootState) => state.usersSlice.users;
-export const selectUsersRequestStatus = (state: RootState) =>
-  state.usersSlice.status;
+export const selectUsersFetchStatus = (state: RootState) =>
+  state.usersSlice.fetchStatus;
+export const selectUsersAddStatus = (state: RootState) =>
+  state.usersSlice.addStatus;
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

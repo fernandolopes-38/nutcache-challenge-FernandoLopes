@@ -18,6 +18,6 @@ export const validateCpf = (cpf: string): boolean => {
 
 export const validateStartDate = (date: string): boolean => {
   const [month, year] = date.split("/");
-  if (parseInt(month) > 12) return false;
+  if (parseInt(month) > 12 || parseInt(month) === 0) return false;
   return true;
 };

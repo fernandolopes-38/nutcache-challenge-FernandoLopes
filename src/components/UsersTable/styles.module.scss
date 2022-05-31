@@ -10,13 +10,18 @@
 
     thead {
       text-align: left;
-      background-color: colors.$dark-gray;
+      white-space: nowrap;
+
       line-height: 2.5;
+      color: colors.$white;
+      background-color: colors.$light-blue;
 
       tr {
         th {
+          font-weight: 600;
+
           &:first-child {
-            padding-left: 10px;
+            padding-left: 0.5rem;
           }
 
           &.align__center {
@@ -28,6 +33,7 @@
 
     tbody {
       line-height: 2.5;
+      white-space: nowrap;
 
       tr {
         td {
@@ -35,13 +41,16 @@
           border-style: solid;
           border-color: colors.$dark-gray;
 
-          &:first-child {
-            padding-left: 10px;
-          }
-
           &.align__center {
             text-align: center;
           }
+          &.skeleton__container {
+            padding: 0.5rem 1rem 0.5rem 0;
+          }
+          &:first-child {
+            padding-left: 0.5rem;
+          }
+
           .flex__center {
             display: flex;
             justify-content: center;

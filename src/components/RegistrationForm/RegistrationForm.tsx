@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import { registerUser, selectUsersRequestStatus } from "../../store/usersSlice";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { registerUser, selectUsersAddStatus } from "../../store/usersSlice";
 import { User } from "../../types";
 import { cpfMask, startDateMask } from "../../utils/masks.utils";
 import { Button } from "../Button";
@@ -8,26 +8,19 @@ import { Select } from "../Form/Select";
 import { useAppDispatch, useAppSelector } from "./../../store/hooks";
 import { validateCpf, validateStartDate } from "./../../utils/validator.utils";
 import styles from "./styles.module.scss";
-
-interface FormData {
-  name: string;
-  birthDate: string;
-  gender: string;
-  email: string;
-  cpf: string;
-  startDate: string;
-  team?: string;
-}
+import { FormData } from "../../pages/App";
 
 interface RegistrationFormProps {
   initalData?: User;
+  formSubmit: (data: FormData) => void;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({
+  formSubmit,
   initalData,
 }) => {
   const dispatch = useAppDispatch();
-  const requestStatus = useAppSelector(selectUsersRequestStatus);
+  const requestStatus = useAppSelector(selectUsersAddStatus);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -36,9 +29,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     email: "",
     cpf: "",
     startDate: "",
+    team: "",
   });
   const [cpfError, setCpfError] = useState(false);
   const [startDateError, setStartDateError] = useState(false);
+
+  useEffect(() => {
+    console.log({ initalData });
+    if (initalData) {
+      const { _id, ...data } = initalData;
+      setFormData(data);
+    }
+  }, [initalData]);
 
   const handleChange =
     (mask?: string) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +53,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
           value = cpfMask(value);
           break;
         default:
-          value = value.trim();
+          value = value;
           break;
       }
       setFormData({
@@ -71,7 +73,6 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    console.log({ formData });
     if (!validateCpf(formData.cpf)) {
       setCpfError(true);
       return;
@@ -80,7 +81,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
       setStartDateError(true);
       return;
     }
-    dispatch(registerUser(formData));
+
+    formSubmit(formData);
   };
 
   return (
@@ -95,7 +97,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         placeholder="John Doe"
         value={formData.name}
         onChange={handleChange()}
-        // required
+        required
       />
       <Input
         name="birthDate"
@@ -103,13 +105,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         type="date"
         value={formData.birthDate}
         onChange={handleChange()}
-        // required
+        required
       />
       <Select
         name="gender"
         label="Gender *"
+        value={formData.gender}
         onChange={handleSelectChange}
-        // required
+        required
       >
         <option value="">Select gender</option>
         <option value="male">Male</option>
@@ -123,7 +126,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         placeholder="john@mail.com"
         value={formData.email}
         onChange={handleChange()}
-        // required
+        required
       />
       <Input
         type="text"
@@ -136,7 +139,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         onChange={handleChange("cpf")}
         error={cpfError ? "Invalid CPF." : ""}
         onFocus={() => setCpfError(false)}
-        // required
+        required
       />
       <Input
         type="text"
@@ -149,9 +152,14 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         onChange={handleChange("startDate")}
         error={startDateError ? "Invalid start date." : ""}
         onFocus={() => setStartDateError(false)}
-        // required
+        required
       />
-      <Select name="team" label="Team" onChange={handleSelectChange}>
+      <Select
+        name="team"
+        label="Team"
+        value={formData.team}
+        onChange={handleSelectChange}
+      >
         <option value="">Select Team</option>
         <option value="mobile">Mobile</option>
         <option value="frontend">Frontend</option>

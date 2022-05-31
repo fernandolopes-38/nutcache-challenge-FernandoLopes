@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState, AnimationEvent } from "react";
 import styles from "./styles.module.scss";
 
 interface ModalProps {
@@ -14,22 +14,46 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onRequestClose,
 }) => {
-  if (!isOpen) return null;
+  const [animation, setAnimation] = useState(false);
+
+  useEffect(() => {
+    setAnimation(isOpen);
+  }, [isOpen]);
+
+  const handleAnimationEnd = (_: AnimationEvent) => {
+    if (!animation) {
+      onRequestClose();
+    }
+  };
 
   return (
-    <div className={styles.overlay}>
+    <div
+      className={`${styles.wrapper} ${animation ? styles.open : styles.close}`}
+    >
       <div
-        className={`${styles.container} ${isOpen ? styles.open : styles.close}`}
+        className={`${styles.container} ${
+          animation ? styles.open : styles.close
+        }`}
+        onAnimationEnd={handleAnimationEnd}
       >
         <header>
           <h1>{title}</h1>
-          <button className={styles.close__btn} onClick={onRequestClose}>
+          <button
+            className={styles.close__btn}
+            onClick={() => setAnimation(false)}
+          >
             X
           </button>
         </header>
 
         <div>{children}</div>
       </div>
+
+      <div
+        className={`${styles.overlay} ${
+          animation ? styles.open : styles.close
+        }`}
+      />
     </div>
   );
 };
