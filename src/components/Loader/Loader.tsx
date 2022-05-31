@@ -14,6 +14,7 @@ export const Loader: React.FC<LoaderProps> = ({
 }) => {
   return (
     <svg
+      data-testid="loader"
       className={`${styles.loading} ${className}`}
       width={size}
       height={size}

@@ -43,7 +43,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   useEffect(() => {
     if (initalData) {
       const { _id, ...data } = initalData;
-      setFormData(data);
+      setFormData({ ...data, cpf: cpfMask(formData.cpf) });
       return;
     }
   }, [initalData]);
@@ -100,7 +100,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
       return;
     }
 
-    formSubmit({ ...formData, cpf: cpfUnmask(formData.cpf) });
+    formSubmit({
+      ...formData,
+      cpf: cpfUnmask(formData.cpf),
+      team: formData.team ? formData.team : null,
+    });
   };
 
   return (
@@ -175,7 +179,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
       <Select
         name="team"
         label="Team"
-        value={formData.team}
+        value={formData.team ?? ""}
         onChange={handleSelectChange}
       >
         <option value="">Select Team</option>

@@ -17,7 +17,7 @@ export interface FormData {
   email: string;
   cpf: string;
   startDate: string;
-  team?: string;
+  team?: string | null | undefined;
 }
 
 const App = () => {
@@ -58,7 +58,7 @@ const App = () => {
         <div className={styles.row}>
           <Input
             type="search"
-            placeholder="Search"
+            placeholder="Search: name,email &amp; team"
             width={250}
             onChange={handleSearch}
           />

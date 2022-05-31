@@ -19,4 +19,14 @@ describe("Button", () => {
 
     expect(buttonClick).toHaveBeenCalledTimes(1);
   });
+
+  it("should render loader when loadingt", async () => {
+    render(
+      <Button onClick={buttonClick} loading={true}>
+        Texto
+      </Button>
+    );
+
+    expect(screen.getByTestId("loader")).toBeInTheDocument();
+  });
 });

@@ -48,15 +48,86 @@ describe("RegistrationForm", () => {
 
     expect(mockSubmit).not.toHaveBeenCalled();
   });
-  // it("should render cpf error message when cpf input is invalid", async () => {
-  //   renderRegistrationForm();
 
-  //   const cpfInput = screen.getByRole("textbox", { name: "CPF *" });
-  //   await userEvent.type(cpfInput, "11111111111");
-  //   expect(cpfInput).toHaveValue("111.111.111-11");
-  //   const submitButton = screen.getByRole("button", { name: "Save" });
-  //   await userEvent.click(submitButton);
+  it("should call formSubmit if all the required fields are filled", async () => {
+    renderRegistrationForm();
 
-  //   expect(screen.getByText("Invalid CPF.")).toBeInTheDocument();
-  // });
+    const nameInput = screen.getByRole("textbox", { name: "Name *" });
+    const birthDateInput = screen.getByLabelText("Birth Date *");
+    const genderSelect = screen.getByRole("combobox", { name: "Gender *" });
+    const option = screen.getByRole("option", {
+      name: "Male",
+    }) as HTMLOptionElement;
+    const emailInput = screen.getByRole("textbox", { name: "E-mail *" });
+    const cpfInput = screen.getByRole("textbox", { name: "CPF *" });
+    const startDateInput = screen.getByRole("textbox", {
+      name: "Start Date *",
+    });
+    const submitButton = screen.getByRole("button", { name: "Save" });
+
+    await userEvent.type(nameInput, "Fernando");
+    await userEvent.type(birthDateInput, "1992-06-13");
+    await userEvent.type(emailInput, "fernando@mail.com");
+    await userEvent.type(cpfInput, "08875457425");
+    await userEvent.type(startDateInput, "122020");
+    await userEvent.selectOptions(genderSelect, option);
+
+    await userEvent.click(submitButton);
+
+    expect(mockSubmit).toHaveBeenCalled();
+  });
+
+  it("should show CPF error message if CPF is invalid", async () => {
+    renderRegistrationForm();
+
+    const nameInput = screen.getByRole("textbox", { name: "Name *" });
+    const birthDateInput = screen.getByLabelText("Birth Date *");
+    const genderSelect = screen.getByRole("combobox", { name: "Gender *" });
+    const option = screen.getByRole("option", {
+      name: "Male",
+    }) as HTMLOptionElement;
+    const emailInput = screen.getByRole("textbox", { name: "E-mail *" });
+    const cpfInput = screen.getByRole("textbox", { name: "CPF *" });
+    const startDateInput = screen.getByRole("textbox", {
+      name: "Start Date *",
+    });
+    const submitButton = screen.getByRole("button", { name: "Save" });
+
+    await userEvent.type(nameInput, "Fernando");
+    await userEvent.type(birthDateInput, "1992-06-13");
+    await userEvent.type(emailInput, "fernando@mail.com");
+    await userEvent.type(cpfInput, "11111111111");
+    await userEvent.type(startDateInput, "122020");
+    await userEvent.selectOptions(genderSelect, option);
+    await userEvent.click(submitButton);
+
+    expect(screen.getByText(/Invalid CPF./i)).toBeInTheDocument();
+  });
+
+  it("should show StartDate error message if StartDate is invalid", async () => {
+    renderRegistrationForm();
+
+    const nameInput = screen.getByRole("textbox", { name: "Name *" });
+    const birthDateInput = screen.getByLabelText("Birth Date *");
+    const genderSelect = screen.getByRole("combobox", { name: "Gender *" });
+    const option = screen.getByRole("option", {
+      name: "Male",
+    }) as HTMLOptionElement;
+    const emailInput = screen.getByRole("textbox", { name: "E-mail *" });
+    const cpfInput = screen.getByRole("textbox", { name: "CPF *" });
+    const startDateInput = screen.getByRole("textbox", {
+      name: "Start Date *",
+    });
+    const submitButton = screen.getByRole("button", { name: "Save" });
+
+    await userEvent.type(nameInput, "Fernando");
+    await userEvent.type(birthDateInput, "1992-06-13");
+    await userEvent.type(emailInput, "fernando@mail.com");
+    await userEvent.type(cpfInput, "08875457425");
+    await userEvent.type(startDateInput, "132020");
+    await userEvent.selectOptions(genderSelect, option);
+    await userEvent.click(submitButton);
+
+    expect(screen.getByText(/Invalid start date./i)).toBeInTheDocument();
+  });
 });

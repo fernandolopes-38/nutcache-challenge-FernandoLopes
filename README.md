@@ -18,17 +18,24 @@ This project was a challenge proposed by Nutcache. It is a web app for employees
 
 ## Use and Setup
 
-The API used in this project was generetaed by Crudcrud website.'
+Run yarn to install dependencies:
+
+```bash
+yarn
+```
+
+The API used in this project was generetaed by Crudcrud website.
 
 Visit [Crudcrud](https://crudcrud.com/) and copy the TOKEN generated.
 
+Paste TOKEN to the variable CRUCRUD_TOKEN inside src/services/api.ts file:
+
+```javascript
+const CRUCRUD_TOKEN = TOKEN;
+```
+
+Run project locally:
+
 ```bash
-# Run yarn to install dependencies:
-yarn
-
-# Copy the TOKEN generated to the variable CRUCRUD_TOKEN inside src/services/api.ts file:
-CRUCRUD_TOKEN = TOKEN
-
-# Run project locally:
-$ yarn dev
+yarn dev
 ```

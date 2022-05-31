@@ -6,5 +6,5 @@ export interface User {
   email: string;
   cpf: string;
   startDate: string;
-  team?: string;
+  team?: string | null | undefined;
 }

@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState, AnimationEvent } from "react";
 import styles from "./styles.module.scss";
 
 interface ModalProps {
-  children: ReactNode;
+  children?: ReactNode;
   title?: string;
   isOpen: boolean;
   onRequestClose: () => void;
@@ -28,6 +28,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
+      data-testid="modal"
       className={`${styles.wrapper} ${animation ? styles.open : styles.close}`}
     >
       <div
