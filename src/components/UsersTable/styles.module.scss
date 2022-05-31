@@ -1,3 +1,53 @@
+@use "../../styles/colors";
+
 .table__container {
   width: 100%;
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: inherit;
+
+    thead {
+      text-align: left;
+      background-color: colors.$dark-gray;
+      line-height: 2.5;
+
+      tr {
+        th {
+          &:first-child {
+            padding-left: 10px;
+          }
+
+          &.align__center {
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    tbody {
+      line-height: 2.5;
+
+      tr {
+        td {
+          border-width: 0 0 1px 0;
+          border-style: solid;
+          border-color: colors.$dark-gray;
+
+          &:first-child {
+            padding-left: 10px;
+          }
+
+          &.align__center {
+            text-align: center;
+          }
+          .flex__center {
+            display: flex;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
 }

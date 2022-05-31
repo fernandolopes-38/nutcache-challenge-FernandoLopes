@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba($color: #fff, $alpha: 0.75);
+  background-color: rgba($color: #000, $alpha: 0.5);
 
   display: flex;
   align-items: center;
@@ -9,22 +9,26 @@
 }
 
 .container {
+  max-width: 1200px;
+  width: max-content;
+
   padding: 2rem;
 
-  background-color: lightblue;
+  background-color: #fff;
 
   border-radius: 0.25rem;
 
   &.open {
-    animation: modal-open 2s forwards;
+    animation: modal-open 0.5s forwards;
   }
 
   &.close {
-    animation: modal-close 2s forwards;
+    animation: modal-close 0.5s forwards;
   }
 
   header {
     display: flex;
+    justify-content: space-between;
     gap: 1rem;
 
     margin-bottom: 2rem;
@@ -43,7 +47,24 @@
       transform: translate(0);
     }
     to {
-      transform: translateY(100%);
+      transform: translateY(300%);
     }
+  }
+}
+
+.close__btn {
+  appearance: none;
+  border: none;
+  background: none;
+
+  height: fit-content;
+
+  padding: 5px;
+
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  &:hover {
+    color: gray;
   }
 }

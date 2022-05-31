@@ -1,0 +1,27 @@
+@use "../../styles/colors";
+
+.button {
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  letter-spacing: 1.25px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  padding: 0 25px;
+
+  border-radius: 0.25rem;
+
+  transition: color 0.3s, background-color 0.3s;
+
+  color: colors.$white;
+  background-color: colors.$blue-100;
+  border: 2px solid colors.$blue-100;
+
+  &:hover:not(:disabled) {
+    color: colors.$blue-100;
+    background-color: colors.$white;
+  }
+}

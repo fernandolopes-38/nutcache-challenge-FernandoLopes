@@ -1,26 +1,26 @@
-import usersSlice from "./usersSlice";
+import usersReducer, { UsersState } from "./usersSlice";
 
 describe("users reducer", () => {
-  // const initialState: CounterState = {
-  //   value: 3,
-  //   status: 'idle',
-  // };
+  const initialState: UsersState = {
+    users: [],
+    status: "idle",
+  };
   it("should handle initial state", () => {
-    // expect(counterReducer(undefined, { type: 'unknown' })).toEqual({
-    //   value: 0,
-    //   status: 'idle',
-    // });
+    expect(usersReducer(undefined, { type: "unknown" })).toEqual({
+      users: [],
+      status: "idle",
+    });
   });
   // it('should handle increment', () => {
-  //   const actual = counterReducer(initialState, increment());
+  //   const actual = usersReducer(initialState, increment());
   //   expect(actual.value).toEqual(4);
   // });
   // it('should handle decrement', () => {
-  //   const actual = counterReducer(initialState, decrement());
+  //   const actual = usersReducer(initialState, decrement());
   //   expect(actual.value).toEqual(2);
   // });
   // it('should handle incrementByAmount', () => {
-  //   const actual = counterReducer(initialState, incrementByAmount(2));
+  //   const actual = usersReducer(initialState, incrementByAmount(2));
   //   expect(actual.value).toEqual(5);
   // });
 });

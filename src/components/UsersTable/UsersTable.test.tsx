@@ -17,9 +17,12 @@ describe("UsersTable", () => {
 
 const USERS = [
   {
+    _id: "id",
     name: "Fernando Lopes",
     email: "fernando@mail.com",
+    gender: "male",
     startDate: "06/2022",
-    team: "Frontend",
+    birthDate: "06/2022",
+    cpf: "Frontend",
   },
 ];

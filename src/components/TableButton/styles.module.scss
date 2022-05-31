@@ -1,0 +1,38 @@
+@use "../../styles/colors";
+
+.button {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+
+  // letter-spacing: 1.25px;
+  // font-weight: 600;
+  // white-space: nowrap;
+  font-size: 0.85rem;
+
+  padding: 5px 8px;
+
+  border-radius: 5px;
+
+  transition: color 0.3s, background-color 0.3s;
+
+  color: colors.$white;
+  background-color: colors.$blue-100;
+  border: 2px solid colors.$blue-100;
+
+  &:hover {
+    color: colors.$blue-100;
+    background-color: colors.$white;
+  }
+
+  &.delete {
+    color: colors.$white;
+    background-color: colors.$red;
+    border: 2px solid colors.$red;
+
+    &:hover {
+      color: colors.$red;
+      background-color: colors.$white;
+    }
+  }
+}
