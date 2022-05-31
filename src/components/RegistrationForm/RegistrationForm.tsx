@@ -9,6 +9,7 @@ import { Select } from "../Form/Select";
 import { useAppSelector } from "./../../store/hooks";
 import { validateCpf, validateStartDate } from "./../../utils/validator.utils";
 import styles from "./styles.module.scss";
+import { cpfUnmask } from "./../../utils/masks.utils";
 
 interface RegistrationFormProps {
   initalData?: User;
@@ -99,7 +100,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
       return;
     }
 
-    formSubmit(formData);
+    formSubmit({ ...formData, cpf: cpfUnmask(formData.cpf) });
   };
 
   return (
