@@ -1,27 +1,47 @@
 @use "../../styles/colors";
 
 .button {
-  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  letter-spacing: 1.25px;
+  padding: 0.5rem 1.5rem;
+
   font-weight: 600;
+  letter-spacing: 1.2px;
   white-space: nowrap;
-
-  padding: 0 25px;
-
-  border-radius: 0.25rem;
-
-  transition: color 0.3s, background-color 0.3s;
 
   color: colors.$white;
   background-color: colors.$blue-100;
   border: 2px solid colors.$blue-100;
+  border-radius: 0.25rem;
+
+  transition: color 0.3s, background-color 0.3s;
 
   &:hover:not(:disabled) {
     color: colors.$blue-100;
     background-color: colors.$white;
+  }
+
+  &.success {
+    color: colors.$white;
+    background-color: colors.$green;
+    border: 2px solid colors.$green;
+
+    &:hover:not(:disabled) {
+      color: colors.$green;
+      background-color: colors.$white;
+    }
+  }
+
+  &.delete {
+    color: colors.$white;
+    background-color: colors.$red;
+    border: 2px solid colors.$red;
+
+    &:hover:not(:disabled) {
+      color: colors.$red;
+      background-color: colors.$white;
+    }
   }
 }

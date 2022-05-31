@@ -1,5 +1,5 @@
 import React from "react";
-import { TableButton } from "../TableButton/TableButton";
+import { Button } from "../Button";
 import styles from "./styles.module.scss";
 
 interface ModalConfirmationProps {
@@ -15,11 +15,15 @@ export const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
 }) => {
   return (
     <div className={styles.container}>
-      <h2>{text}</h2>
+      <h3>{text}</h3>
 
-      <div>
-        <TableButton>Yes</TableButton>
-        <TableButton>No</TableButton>
+      <div className={styles.buttons__container}>
+        <Button theme="success" onClick={onYesClick}>
+          Yes
+        </Button>
+        <Button theme="delete" onClick={onNoClick}>
+          No
+        </Button>
       </div>
     </div>
   );

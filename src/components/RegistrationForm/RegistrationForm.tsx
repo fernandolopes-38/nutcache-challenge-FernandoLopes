@@ -1,25 +1,26 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { registerUser, selectUsersAddStatus } from "../../store/usersSlice";
+import { FormData } from "../../pages/App";
+import { selectUsersAddStatus } from "../../store/usersSlice";
 import { User } from "../../types";
 import { cpfMask, startDateMask } from "../../utils/masks.utils";
 import { Button } from "../Button";
 import { Input } from "../Form/Input";
 import { Select } from "../Form/Select";
-import { useAppDispatch, useAppSelector } from "./../../store/hooks";
+import { useAppSelector } from "./../../store/hooks";
 import { validateCpf, validateStartDate } from "./../../utils/validator.utils";
 import styles from "./styles.module.scss";
-import { FormData } from "../../pages/App";
 
 interface RegistrationFormProps {
   initalData?: User;
   formSubmit: (data: FormData) => void;
+  isModalOpen?: boolean;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   formSubmit,
   initalData,
+  isModalOpen,
 }) => {
-  const dispatch = useAppDispatch();
   const requestStatus = useAppSelector(selectUsersAddStatus);
 
   const [formData, setFormData] = useState<FormData>({
@@ -35,12 +36,28 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [startDateError, setStartDateError] = useState(false);
 
   useEffect(() => {
-    console.log({ initalData });
+    if (isModalOpen) clearForm();
+  }, [isModalOpen]);
+
+  useEffect(() => {
     if (initalData) {
       const { _id, ...data } = initalData;
       setFormData(data);
+      return;
     }
   }, [initalData]);
+
+  const clearForm = () => {
+    setFormData({
+      name: "",
+      birthDate: "",
+      gender: "",
+      email: "",
+      cpf: "",
+      startDate: "",
+      team: "",
+    });
+  };
 
   const handleChange =
     (mask?: string) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +183,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         <option value="backend">Backend</option>
       </Select>
 
-      <Button type="submit" loading={requestStatus === "loading"}>
+      <Button
+        type="submit"
+        theme="success"
+        loading={requestStatus === "loading"}
+      >
         Save
       </Button>
     </form>

@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { User } from "../../types";
+import { Button } from "../Button";
 import { Modal } from "../Modal";
-import { Skeleton } from "../Skeleton";
-import { TableButton } from "../TableButton/TableButton";
-import styles from "./styles.module.scss";
-import { selectUsersFetchStatus, updateUser } from "./../../store/usersSlice";
 import { ModalConfirmation } from "../ModalConfirmation";
 import { RegistrationForm } from "../RegistrationForm";
+import { Skeleton } from "../Skeleton";
 import { FormData } from "./../../pages/App";
 import { useAppDispatch } from "./../../store/hooks";
+import {
+  deleteUser,
+  selectUsersFetchStatus,
+  updateUser,
+} from "./../../store/usersSlice";
+import styles from "./styles.module.scss";
 
 interface UsersTableProps {
   users: User[];
@@ -22,20 +26,23 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState<User>();
 
-  const handleDeleteEmployee = (employee: User) => {
-    console.log({ employee });
+  const handleDeleteClick = (employee: User) => {
     setCurrentEmployee(employee);
     setIsDeleteModalOpen(true);
   };
 
-  const handleEditEmployee = async (employee: User) => {
+  const handleEditClick = async (employee: User) => {
     setCurrentEmployee(employee);
     setIsEditModalOpen(true);
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleEditEmployee = async (data: FormData) => {
     await dispatch(updateUser({ userId: currentEmployee!._id, user: data }));
     setIsEditModalOpen(false);
+  };
+  const handleDeleteEmployee = () => {
+    dispatch(deleteUser(currentEmployee!._id));
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -96,19 +103,17 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user?.team ?? "-"}</td>
               <td>
                 <div className={styles.flex__center}>
-                  <TableButton onClick={() => handleEditEmployee(user)}>
-                    Edit
-                  </TableButton>
+                  <Button onClick={() => handleEditClick(user)}>Edit</Button>
                 </div>
               </td>
               <td>
                 <div className={styles.flex__center}>
-                  <TableButton
+                  <Button
                     theme="delete"
-                    onClick={() => handleDeleteEmployee(user)}
+                    onClick={() => handleDeleteClick(user)}
                   >
                     Delete
-                  </TableButton>
+                  </Button>
                 </div>
               </td>
             </tr>
@@ -123,8 +128,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
       >
         <ModalConfirmation
           text={`Are you sure to delete ${currentEmployee?.name}?`}
-          onYesClick={() => {}}
-          onNoClick={() => {}}
+          onYesClick={() => handleDeleteEmployee()}
+          onNoClick={() => setIsDeleteModalOpen(false)}
         />
       </Modal>
       <Modal
@@ -133,7 +138,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
         onRequestClose={() => setIsEditModalOpen(false)}
       >
         <RegistrationForm
-          formSubmit={handleSubmit}
+          formSubmit={handleEditEmployee}
           initalData={currentEmployee}
         />
       </Modal>

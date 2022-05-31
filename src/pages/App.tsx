@@ -1,15 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { Button } from "../components/Button";
+import { Input } from "../components/Form/Input";
 import { Header } from "../components/Header";
 import { Modal } from "../components/Modal";
 import { RegistrationForm } from "../components/RegistrationForm";
 import { UsersTable } from "../components/UsersTable";
 import { fetchUsers, registerUser, selectUsers } from "../store/usersSlice";
-import { useAppDispatch, useAppSelector } from "./../store/hooks";
 import styles from "../styles/pages/app.module.scss";
-import { Button } from "../components/Button";
-import { validateCpf, validateStartDate } from "../utils/validator.utils";
-import { Input } from "../components/Form/Input";
 import { User } from "../types";
+import { useAppDispatch, useAppSelector } from "./../store/hooks";
 
 export interface FormData {
   name: string;
@@ -68,6 +67,7 @@ const App = () => {
             Register new employee
           </Button>
         </div>
+
         <UsersTable users={usersFiltered} />
       </main>
 
@@ -76,7 +76,7 @@ const App = () => {
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
       >
-        <RegistrationForm formSubmit={handleSubmit} />
+        <RegistrationForm isModalOpen={isModalOpen} formSubmit={handleSubmit} />
       </Modal>
     </div>
   );
